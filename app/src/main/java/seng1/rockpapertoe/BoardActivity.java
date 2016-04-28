@@ -12,17 +12,25 @@ public class BoardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board);
+        hmt = new HighscoreMockupTest();
     }
 
-    public void getTop3(View v){
-        TextView output = (TextView) findViewById(R.id.editText);
+    HighscoreMockupTest hmt;
 
-        HighscoreMockupTest hmt = new HighscoreMockupTest();
+    public void getTop10(View v){
 
-        for (HighscoreMockup hm: hmt.getTop3()) {
-            output.setText(hm.toString() + System.getProperty("line.separator"));
+        for (HighscoreMockup hm: hmt.getTop10()) {
             Log.d("Datensatz:", hm.toString());
         }
 
+    }
+
+    public void addUser(View v){
+        HighscoreMockup hm = new HighscoreMockup();
+        hm.setId(4);
+        hm.setName("UuUuUuUuU");
+        hm.setScore(5);
+        hm.setRanking(2);
+        hmt.addNewUser(hm);
     }
 }

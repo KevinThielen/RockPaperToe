@@ -20,6 +20,14 @@
         android:text="New Button"
         android:id="@+id/button"
         android:layout_gravity="left|top"
-        android:onClick="getTop3"/>
+        android:onClick="getTop10"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ADD User"
+        android:id="@+id/button2"
+        android:layout_gravity="center_horizontal|top"
+        android:onClick="addUser"/>
 
 </FrameLayout>

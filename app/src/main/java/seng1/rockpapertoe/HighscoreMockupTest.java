@@ -26,8 +26,8 @@ public class HighscoreMockupTest {
         // Szenario b
         b.setId(2);
         b.setName("Joo");
-        b.setRanking(2);
-        b.setScore(7);
+        b.setRanking(10);
+        b.setScore(1);
 
         // Szenario c
         c.setId(3);
@@ -44,9 +44,13 @@ public class HighscoreMockupTest {
         //Collections.sort(highscores);
     }
 
-    public ArrayList<HighscoreMockup> getTop3(){
+    public ArrayList<HighscoreMockup> getTop10(){
         Collections.sort(highscores);
         return this.highscores;
+    }
+
+    public void addNewUser(HighscoreMockup hm){
+        this.highscores.add(hm);
     }
 
 }
