@@ -1,10 +1,11 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:id="@+id/fullscreen_content"
-    tools:context="com.example.juliusschengber1.rockpapertoe.FullscreenActivity">
+    tools:context="com.example.juliusschengber1.rockpapertoe.FullscreenActivity"
+    android:stretchColumns="*">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
@@ -14,20 +15,68 @@
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button"
-        android:layout_gravity="left|top"
-        android:onClick="getTop10"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Highscore"
+            android:id="@+id/txtHighscoreTitle"
+            android:textAlignment="center"
+            android:textSize="50dp"
+            android:layout_column="0" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ADD User"
-        android:id="@+id/button2"
-        android:layout_gravity="center_horizontal|top"
-        android:onClick="addUser"/>
 
-</FrameLayout>
+    <TableRow
+        android:id="@+id/tableRowTop10"
+        android:padding="10dp"
+        android:layout_width="0dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rank"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:id="@+id/txtRankTitle"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:id="@+id/txtNameTitle"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Score"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:id="@+id/txtScoreTitle"
+            android:layout_weight="1"/>
+
+    </TableRow>
+
+
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            android:id="@+id/button"
+            android:onClick="getTop10" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ADD User"
+            android:id="@+id/button2"
+            android:onClick="addUser" />
+
+
+
+</TableLayout>

@@ -46,7 +46,15 @@ public class HighscoreMockupTest {
 
     public ArrayList<HighscoreMockup> getTop10(){
         Collections.sort(highscores);
-        return this.highscores;
+
+        ArrayList<HighscoreMockup> top10 = new ArrayList<>();
+
+        for(int i = 0; i < highscores.size(); i++){
+            if(i < 10)
+                top10.add(highscores.get(i));
+        }
+
+        return top10;
     }
 
     public void addNewUser(HighscoreMockup hm){
