@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Rock Paper Toe</string>
+    <string name="not_signed_in">Nicht angemeldet</string>
+    <string name="anmelden">Anmelden</string>
 </resources>
