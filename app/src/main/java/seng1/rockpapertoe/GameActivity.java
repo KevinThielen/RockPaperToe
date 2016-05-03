@@ -10,12 +10,18 @@ import seng1.rockpapertoe.Game.*;
 import org.w3c.dom.Text;
 
 public class GameActivity extends AppCompatActivity {
-    //remote server
+    //remote server, currently a stub
     Game gameServer;
+
+    //currentPlayer, will be changed to owner of activity when server goes live
     Player player;
+
+    //buttons for player actions. Range [0,0],[3,3]
     Button buttons[][];
 
+    //playes name as TextView
     TextView playerView;
+    //Opponents name as Textview
     TextView opponentView;
 
     @Override
@@ -24,9 +30,6 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         gameServer = new Game();
-        //TODO: current player hack till player login
-
-        player = gameServer.getCurrentPlayer();
 
         playerView = (TextView) findViewById(R.id.playerView);
         opponentView = (TextView) findViewById(R.id.opponentsView);
@@ -36,6 +39,13 @@ public class GameActivity extends AppCompatActivity {
         updateBoard();
     }
 
+    /**
+     * Get all cell of the board.
+     * Get a handle for each of the 9 button that represents the cells on the board
+     * und put them int an 2D-array.
+     *
+     * @author Kevin Thielen
+     */
     void setButtons() {
         buttons = new Button[3][3];
         buttons[0][0] = (Button) findViewById(R.id.button00);
@@ -49,6 +59,13 @@ public class GameActivity extends AppCompatActivity {
         buttons[2][2] = (Button) findViewById(R.id.button22);
     }
 
+    /**
+     * Set input listener for the Cells
+     * Iterates the 2D-cell array and sets
+     * the onClickListener for button presses
+     *
+     * @author Kevin Thielen
+     */
     void setInputListener() {
         for(int x = 0; x<3; x++) {
             for(int y = 0; y<3; y++) {
@@ -58,6 +75,14 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Translates the button press into a move
+     * Takes the button x and y position to translate the button press
+     * into a player action. The action will be sent to the server
+     * and the board will copy the new board state from it.
+     *
+     * @author Kevin Thielen
+     */
     View.OnClickListener buttonListener = new View.OnClickListener() {
         public void onClick(View v) {
             for(int x = 0; x<3; x++) {
@@ -72,6 +97,16 @@ public class GameActivity extends AppCompatActivity {
         }
     };
 
+
+    /**
+     * Updates the board state
+     * Sets the value for each button, depending on the board state.
+     * The backgroundcolor will be set to color of the owning player
+     * of that cell. If the cell has no ownership at that time, the color
+     * will be set to gray. The text represents the ECell value.
+     *
+     * @author Kevin Thielen
+     */
     void updateBoard() {
         Cell board[][] = gameServer.getBoard();
         for(int x = 0; x<3; x++) {
