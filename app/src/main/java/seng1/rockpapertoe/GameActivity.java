@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import seng1.rockpapertoe.Game.*;
 
-import org.w3c.dom.Text;
 
 public class GameActivity extends AppCompatActivity {
     //remote server, currently a stub
