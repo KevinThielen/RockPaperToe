@@ -1,17 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background"
-    android:id="@+id/fullscreen_content"
-    tools:context="com.example.juliusschengber1.rockpapertoe.StartActivity">
-    <!-- The primary full-screen view. This can be replaced with whatever view
-         is needed to present your content, e.g. VideoView, SurfaceView,
-         TextureView, etc. -->
+    tools:context="com.example.juliusschengber1.rockpapertoe.SignInActivity">
 
-
-    <!-- This FrameLayout insets its children based on system windows using
-         android:fitsSystemWindows. -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,23 +32,19 @@
             android:layout_gravity="center_horizontal|top"
             android:src="@drawable/headline"/>
 
-        <Button
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:text="Play"
-            android:id="@+id/play"
             android:layout_gravity="center"
-            android:background="@color/nil"
-            android:textColor="@color/white"
-            android:onClick=""/>
+            android:layout_marginTop="70dp" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="130dp"
-            android:text="Leaderboard"
-            android:id="@+id/board"
+            android:text="Sign Out"
+            android:id="@+id/sign_out_button"
             android:layout_gravity="center"
             android:background="@color/nil"
             android:textColor="@color/white"/>
@@ -63,11 +53,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="190dp"
-            android:text="Preferences"
-            android:id="@+id/prefs"
+            android:text="Continue"
+            android:id="@+id/continue_button"
             android:layout_gravity="center"
             android:background="@color/nil"
             android:textColor="@color/white"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/status"
+            android:layout_gravity="center_horizontal|bottom" />
+
 
     </FrameLayout>
 

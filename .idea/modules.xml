@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/RockPaperToe.iml" filepath="$PROJECT_DIR$/RockPaperToe.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/RockPaperToe-master.iml" filepath="$PROJECT_DIR$/RockPaperToe-master.iml" />
+>>>>>>> 2ec0bd33d6ea3195f915330a13b4f07fb3a67f41
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

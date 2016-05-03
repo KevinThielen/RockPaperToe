@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1085883530916",
+    "project_id": "rock-paper-toe"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1085883530916:android:2a6766316b5ebe17",
+        "android_client_info": {
+          "package_name": "seng1.rockpapertoe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1085883530916-iubmel7cg2gei3o44kekm8e63fdpunv9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "seng1.rockpapertoe",
+            "certificate_hash": "54FC837F575033A49D7A8F974FCE678690E4D97F"
+          }
+        },
+        {
+          "client_id": "1085883530916-bolh40oks7bfdt5o541k61r9fm0fuc5i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8GkipS77D9qIzuhub1J7jDsiEn4CF-18"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

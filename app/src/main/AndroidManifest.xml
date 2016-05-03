@@ -8,6 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
+
         <activity android:name=".StartActivity">
 
         </activity>
@@ -15,12 +16,12 @@
         <activity android:name=".PrefsActivity" />
         <activity android:name=".BoardActivity" />
         <activity android:name=".GameActivity">
+        <activity android:name=".SignInActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
-
 </manifest>
