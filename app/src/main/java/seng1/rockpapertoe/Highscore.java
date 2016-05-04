@@ -14,6 +14,8 @@ public class Highscore implements Comparable<Highscore> {
 
     /**
      * Getting the highscore of the player who demands it
+     *
+     * @author Antonios Kouklidis
      */
     public int getMyHighscore(int myId){
         return getId();
@@ -56,6 +58,11 @@ public class Highscore implements Comparable<Highscore> {
         return "ID: "+this.id+" Name: "+this.name+" Score: "+this.score+" Ranking: "+this.ranking;
     }
 
+    /**
+     * Comparable Highscore-Objects to sort by rank value
+     *
+     * @author Antonios Kouklidis
+     */
     @Override
     public int compareTo(Highscore another) {
         if(this.getRanking() > another.getRanking())

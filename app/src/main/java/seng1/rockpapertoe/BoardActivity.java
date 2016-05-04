@@ -21,20 +21,30 @@ public class BoardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board);
 
-        // Highscore Object for every Client
+        //Highscore Object for every Client
         hmt = new HighscoreMockup();
 
-        //Asynchron Task
+        //Async-Task execution
         new HighscoreDataLoadingTask().execute();
 
-        // Database Id of current User
         this.sessionID = new Random().nextInt(11) +1;
     }
 
+    //Database ID of current user
     private int sessionID;
+    //Testdata in hmt Object
     private HighscoreMockup hmt;
+    //Top10 List of gamers in app
     private ArrayList<Highscore> top10;
 
+    /**
+     * Getting the Top10 as a ArrayList from Highscore
+     * Checking if current Client/Player/User is in Top10 ArrayList
+     * Then calling next function in dependence of the result (if user is in Top10)
+     *
+     * @param top10     An ArrayList with top 10 objects
+     * @author          Antonios Kouklidis
+     */
     private void checkViewForUsers(ArrayList<Highscore> top10){
         this.top10 = top10;
         int size = 0;
@@ -54,10 +64,19 @@ public class BoardActivity extends AppCompatActivity {
 
         if(!ownHighscoreInTop10)
             createViewForUsers(1, false);
-
     }
 
+    /**
+     * This function is responsible for the view
+     * Top 10 player information will be added on the view
+     * If current user is in top 10 list then the row where he is will be highlighted in red
+     * Else the top 10 will be displayed and additional the current user under the headline My Highscore
+     * @param users          => If user is in top 10 then users = 10 else user = 1
+     * @param ownHighscore   => If user is in top 10 then true else false
+     * @author Antonios Kouklidis
+     */
     private void createViewForUsers(int users, boolean ownHighscore){
+        //Finding the Layout for the view
         TableLayout tl = (TableLayout) findViewById(R.id.fullscreen_content);
         Boolean highscoreInTop10 = ownHighscore;
         Highscore me = null;
@@ -76,6 +95,7 @@ public class BoardActivity extends AppCompatActivity {
                 tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
                 tl.addView(tv);
 
+                //The need of the user highscore object if he is not in the top 10
                 me = hmt.getMyHighscore(sessionID);
 
                 tr.setBackgroundColor(Color.RED);
@@ -107,13 +127,23 @@ public class BoardActivity extends AppCompatActivity {
                 tv3.setText("" + me.getScore());
             tv3.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 
+            //Adding TextViews to TableRows
             tr.addView(tv);
             tr.addView(tv2);
             tr.addView(tv3);
+            //Adding the TableRow to TableLayout
             tl.addView(tr);
         }
     }
 
+    /**
+     * Inner Class for Asyn-Task
+     * onPreExecute displays a loading Element to ensure that the app is loading data
+     * doInBackground is loading Data from the Database (Mockup) and returns an ArrayList with top 10 objects
+     * onPostExecute hides the loading Element and displays the user (top10) and maybe an additional user(current)
+     *
+     * @author Antonios Kouklidis
+     */
     class HighscoreDataLoadingTask extends AsyncTask<String, Void, ArrayList>{
 
         private ProgressDialog pd = new ProgressDialog(BoardActivity.this);
