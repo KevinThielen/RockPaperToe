@@ -15,16 +15,15 @@
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Highscore"
-            android:id="@+id/txtHighscoreTitle"
-            android:textAlignment="center"
-            android:textSize="50dp"
-            android:layout_column="0" />
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Highscore"
+        android:id="@+id/txtHighscoreTitle"
+        android:textAlignment="center"
+        android:textSize="50dp"
+        android:layout_column="0" />
 
     <TableRow
         android:id="@+id/tableRowTop10"
@@ -57,24 +56,6 @@
             android:textAlignment="center"
             android:id="@+id/txtScoreTitle"
             android:layout_weight="1"/>
-
     </TableRow>
-
-    <!--
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        android:id="@+id/button"
-        android:onClick="getTop10" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ADD User"
-        android:id="@+id/button2"
-        android:onClick="addUser" />
-    -->
-
 
 </TableLayout>

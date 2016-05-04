@@ -12,7 +12,6 @@ public class HighscoreMockupTest {
 
     private ArrayList<HighscoreMockup> highscores;
 
-
     public HighscoreMockupTest() {
         a = new HighscoreMockup();
         b = new HighscoreMockup();
@@ -28,19 +27,19 @@ public class HighscoreMockupTest {
 
         // Szenario a
         a.setId(1);
-        a.setName("Killer");
+        a.setName("Antonios");
         a.setRanking(1);
         a.setScore(100);
 
         // Szenario b
         b.setId(2);
-        b.setName("Joo");
+        b.setName("Joe");
         b.setRanking(2);
         b.setScore(99);
 
         // Szenario c
         c.setId(3);
-        c.setName("returrrn");
+        c.setName("Julius");
         c.setRanking(3);
         c.setScore(90);
 
@@ -127,9 +126,4 @@ public class HighscoreMockupTest {
             }
         return null;
     }
-
-    public void addNewUser(HighscoreMockup hm){
-        this.highscores.add(hm);
-    }
-
 }

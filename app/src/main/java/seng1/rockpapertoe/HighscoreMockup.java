@@ -1,8 +1,5 @@
 package seng1.rockpapertoe;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 /**
  * Created by Antonio on 28.04.16.
  */
@@ -15,7 +12,7 @@ public class HighscoreMockup implements Comparable<HighscoreMockup> {
 
     }
 
-    /*
+    /**
      * Getting the highscore of the player who demands it
      */
     public int getMyHighscore(int myId){
