@@ -4,14 +4,12 @@ import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.os.Bundle;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -24,7 +22,7 @@ public class BoardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_board);
 
         // Highscore Object for every Client
-        hmt = new HighscoreMockupTest();
+        hmt = new HighscoreMockup();
 
         //Asynchron Task
         new HighscoreDataLoadingTask().execute();
@@ -34,10 +32,10 @@ public class BoardActivity extends AppCompatActivity {
     }
 
     private int sessionID;
-    private HighscoreMockupTest hmt;
-    private ArrayList<HighscoreMockup> top10;
+    private HighscoreMockup hmt;
+    private ArrayList<Highscore> top10;
 
-    private void checkViewForUsers(ArrayList<HighscoreMockup> top10){
+    private void checkViewForUsers(ArrayList<Highscore> top10){
         this.top10 = top10;
         int size = 0;
         Boolean ownHighscoreInTop10 = false;
@@ -62,7 +60,7 @@ public class BoardActivity extends AppCompatActivity {
     private void createViewForUsers(int users, boolean ownHighscore){
         TableLayout tl = (TableLayout) findViewById(R.id.fullscreen_content);
         Boolean highscoreInTop10 = ownHighscore;
-        HighscoreMockup me = null;
+        Highscore me = null;
 
         for(int i = 0; i < users; i++) {
             TableRow tr = new TableRow(this);
@@ -129,7 +127,7 @@ public class BoardActivity extends AppCompatActivity {
             this.pd.show();
         }
 
-        protected ArrayList<HighscoreMockup> doInBackground(String... params){
+        protected ArrayList<Highscore> doInBackground(String... params){
 
             try {
                 Thread.sleep(1000);
