@@ -1,10 +1,11 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:id="@+id/fullscreen_content"
-    tools:context="com.example.juliusschengber1.rockpapertoe.FullscreenActivity">
+    tools:context="com.example.juliusschengber1.rockpapertoe.FullscreenActivity"
+    android:stretchColumns="*">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
@@ -13,32 +14,48 @@
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
 
-        <LinearLayout
-            android:id="@+id/fullscreen_content_controls"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:background="@color/black_overlay"
-            android:orientation="horizontal"
-            tools:ignore="UselessParent">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Highscore"
+        android:id="@+id/txtHighscoreTitle"
+        android:textAlignment="center"
+        android:textSize="50dp"
+        android:layout_column="0" />
 
-        </LinearLayout>
+    <TableRow
+        android:id="@+id/tableRowTop10"
+        android:padding="10dp"
+        android:layout_width="0dp">
 
-
-        <GridView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/gridView"
-            android:layout_gravity="center_horizontal|top"
-            android:numColumns="1"
-            android:layout_marginLeft="100dp" />
+            android:text="Rank"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:id="@+id/txtRankTitle"
+            android:layout_weight="1"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:id="@+id/txtNameTitle"
+            android:layout_weight="1"/>
 
-    </FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Score"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:id="@+id/txtScoreTitle"
+            android:layout_weight="1"/>
+    </TableRow>
 
-</FrameLayout>
+</TableLayout>
