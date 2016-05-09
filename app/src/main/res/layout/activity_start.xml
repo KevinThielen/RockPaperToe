@@ -42,7 +42,7 @@
             android:id="@+id/play"
             android:layout_gravity="center"
             android:background="@color/nil"
-            android:textColor="@color/white">
+            android:textColor="@color/white"/>
 
         <Button
             android:layout_width="wrap_content"
