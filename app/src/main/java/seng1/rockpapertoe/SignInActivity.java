@@ -27,7 +27,7 @@ public class SignInActivity extends AppCompatActivity implements
         View.OnClickListener {
 
     private static final String TAG = "SignInActivity";
-    private static final int RC_SIGN_IN = 9001;
+    private static final int signinCode = 9001;
 
     private GoogleApiClient apiClient;
     private TextView statusTextView;
@@ -40,29 +40,35 @@ public class SignInActivity extends AppCompatActivity implements
 
         // Views
         statusTextView = (TextView) findViewById(R.id.status);
+        /*
+        *setup Button listeners
+        * @author JuliusSchengber
+        */
 
-        // Button listeners
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
         findViewById(R.id.continue_button).setOnClickListener(this);
 
-        // [START configure_signin]
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+       /*
+        * specify information to request from the user
+        * ID and basic profile are included in Default_SIGN_IN
+        * @author JuliusSchengber
+        */
+        GoogleSignInOptions ops = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestProfile()
                 .requestEmail()
                 .build();
-        // [END configure_signin]
 
-        // [START build_client]
-        // Build a GoogleApiClient with access to the Google Sign-In API and the
-        // options specified by gso.
+
+
+        /*Build a GoogleApiClient with access to the Google Sign-In API and the
+        *options specified
+        * @author JuliusSchengber
+        */
         apiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, ops)
                 .build();
-        // [END build_client]
 
 
     }
@@ -71,19 +77,21 @@ public class SignInActivity extends AppCompatActivity implements
     public void onStart() {
         super.onStart();
 
-        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(apiClient);
-        if (opr.isDone()) {
-            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
-            // and the GoogleSignInResult will be available instantly.
+        OptionalPendingResult<GoogleSignInResult> cachedSignIn = Auth.GoogleSignInApi.silentSignIn(apiClient);
+        if (cachedSignIn.isDone()) {
+            /*
+            * if the user has signed in before and it´s cached and valid, these information are used
+            * @author JuliusSchengber
+             */
             Log.d(TAG, "Got cached sign-in");
-            GoogleSignInResult result = opr.get();
+            GoogleSignInResult result = cachedSignIn.get();
             handleSignInResult(result);
         } else {
             // If the user has not previously signed in on this device or the sign-in has expired,
             // this asynchronous branch will attempt to sign in the user silently.  Cross-device
             // single sign-on will occur in this branch.
             showProgressDialog();
-            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+            cachedSignIn.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                 @Override
                 public void onResult(GoogleSignInResult googleSignInResult) {
                     hideProgressDialog();
@@ -93,25 +101,34 @@ public class SignInActivity extends AppCompatActivity implements
         }
     }
 
-    // [START onActivityResult]
+    /*
+     *get Sign in Result
+     * @author JuliusSchengber
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
+        //result from GoogleSignInApi
+        if (requestCode == signinCode) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         }
     }
-    // [END onActivityResult]
 
-
-    // [START handleSignInResult]
+    /*
+    *handle the Sign In Result
+    *@author JuliusSchengber
+     */
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
+            /*
+            *Signed in successfully, get user information
+            *and show user´s mail address
+            * in statusTextView
+            * @author JuliusSchengber
+             */
             GoogleSignInAccount acct = result.getSignInAccount();
             String signinmail = acct.getEmail();
             if(signinmail != null) {
@@ -127,17 +144,19 @@ public class SignInActivity extends AppCompatActivity implements
             updateUI(false);
         }
     }
-    // [END handleSignInResult]
 
 
-    // [START signIn]
+    /*
+    *Sign in the user
+     */
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(apiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        startActivityForResult(signInIntent, signinCode);
     }
-    // [END signIn]
 
-    // [START signOut]
+    /*
+    * sign out the user
+     */
     private void signOut() {
         Auth.GoogleSignInApi.signOut(apiClient).setResultCallback(
                 new ResultCallback<Status>() {
@@ -147,7 +166,6 @@ public class SignInActivity extends AppCompatActivity implements
                     }
                 });
     }
-    // [END signOut]
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
@@ -159,7 +177,7 @@ public class SignInActivity extends AppCompatActivity implements
     private void showProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
-            //progressDialog.setMessage(getString(R.string.loading));
+            progressDialog.setMessage("loading...");
             progressDialog.setIndeterminate(true);
         }
 
@@ -172,6 +190,12 @@ public class SignInActivity extends AppCompatActivity implements
         }
     }
 
+        /*
+        * update the User Interface depending on the information
+        * if the user is logged in or not
+        * show and hide those buttons
+        * @author JuliusSchengber
+         */
     private void updateUI(boolean signedIn) {
         if (signedIn) {
             findViewById(R.id.sign_in_button).setVisibility(View.INVISIBLE);
@@ -185,10 +209,18 @@ public class SignInActivity extends AppCompatActivity implements
         }
     }
 
+        /*
+        * go to StartScreen
+        * @author JuliusSchengber
+         */
     public void switchToStart(){
         startActivity(new Intent(this, StartActivity.class));
     }
 
+        /*
+        * handle the actions after buttons get clicked
+        * @author JuliusSchengber
+         */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
