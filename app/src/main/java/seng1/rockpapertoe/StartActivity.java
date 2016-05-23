@@ -6,7 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-
+    /*
+    * Startscreen after the user has logged in
+    * possibilities to start a game, open the leaderboard oder his preferences
+    * @author JuliusSchengber
+    */
 
 public class StartActivity extends AppCompatActivity {
 
