@@ -18,9 +18,9 @@ public class GameActivity extends AppCompatActivity {
     //buttons for player actions. Range [0,0],[3,3]
     Button buttons[][];
 
-    //playes name as TextView
+    //player´s name as TextView
     TextView playerView;
-    //Opponents name as Textview
+    //Opponent´s name as Textview
     TextView opponentView;
 
     @Override

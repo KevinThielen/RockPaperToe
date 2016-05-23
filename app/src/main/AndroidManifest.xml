@@ -13,14 +13,12 @@
         <activity android:name=".PlayActivity" />
         <activity android:name=".PrefsActivity" />
         <activity android:name=".BoardActivity" />
-        <activity android:name=".GameActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".GameActivity"/>
+        <activity android:name=".SignInActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
-        <activity android:name=".SignInActivity" />
-
     </application>
 </manifest>
