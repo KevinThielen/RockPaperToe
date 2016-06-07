@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RockPaperToe.iml" filepath="$PROJECT_DIR$/RockPaperToe.iml" />
-      <module fileurl="file://$PROJECT_DIR$/RockPaperToe-master.iml" filepath="$PROJECT_DIR$/RockPaperToe-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
