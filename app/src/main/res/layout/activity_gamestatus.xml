@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:stretchColumns="*">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Games"
+        android:id="@+id/txtGameStatusTitle"
+        android:textSize="50sp"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Game"
+        android:id="@+id/buttonStartGame"
+        android:layout_below="@+id/txtGameStatusTitle"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"/>
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/listViewGameStatus"
+        android:layout_below="@+id/buttonStartGame"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:listSelector="@drawable/list_selector"/>
+</RelativeLayout>
