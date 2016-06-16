@@ -94,11 +94,9 @@ public class Game {
         Player owner = board[1][1].getOwner();
         if(owner != null && owner == board[0][0].getOwner() && owner == board[2][2].getOwner())
             return true;
-        if(owner != null && owner == board[2][0].getOwner() && owner == board[0][2].getOwner())
-            return true;
+        return owner != null && owner == board[2][0].getOwner() && owner == board[0][2].getOwner();
 
 
-        return false;
     }
 
     ECell winsAgainst(ECell cell) {
