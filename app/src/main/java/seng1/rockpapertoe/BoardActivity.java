@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.os.Bundle;
 import android.widget.TableLayout;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Random;
 
+import seng1.rockpapertoe.Remote.RockPaperToeServerStub;
+
 
 public class BoardActivity extends AppCompatActivity {
 
@@ -21,21 +24,23 @@ public class BoardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board);
 
-        //Highscore Object for every Client
-        hmt = new HighscoreMockup();
-
         //Async-Task execution
         new HighscoreDataLoadingTask().execute();
 
-        this.sessionID = new Random().nextInt(11) +1;
+        //this.sessionID = new Random().nextInt(11) +1;
+        //this.sessionID = new Random().nextInt(10) +1;
+        this.sessionID = 10;
+
+        stub = new RockPaperToeServerStub();
     }
 
     //Database ID of current user
-    private int sessionID;
-    //Testdata in hmt Object
-    private HighscoreMockup hmt;
+    private static int sessionID;
     //Top10 List of gamers in app
     private ArrayList<Highscore> top10;
+    //ServerStub-Object to get Data from Server
+    private RockPaperToeServerStub stub;
+
 
     /**
      * Getting the Top10 as a ArrayList from Highscore
@@ -55,15 +60,22 @@ public class BoardActivity extends AppCompatActivity {
         else
             size = 10;
 
+        /*
         for(int i = 0; i < size; i++) {
             if (top10.get(i).getId() == sessionID)
+                ownHighscoreInTop10 = true;
+        }*/
+
+        for(int i = 0; i < size; i++) {
+            if (top10.get(i).getPlayerId() == sessionID)
                 ownHighscoreInTop10 = true;
         }
 
         createViewForUsers(size, true);
 
-        if(!ownHighscoreInTop10)
-            createViewForUsers(1, false);
+        if(!ownHighscoreInTop10) {
+            new MyHTask().execute(sessionID);
+        }
     }
 
     /**
@@ -79,12 +91,13 @@ public class BoardActivity extends AppCompatActivity {
         //Finding the Layout for the view
         TableLayout tl = (TableLayout) findViewById(R.id.fullscreen_content);
         Boolean highscoreInTop10 = ownHighscore;
-        Highscore me = null;
+        // me = null;
 
         for(int i = 0; i < users; i++) {
             TableRow tr = new TableRow(this);
 
-            if (top10.get(i).getId() == sessionID && highscoreInTop10) {
+            if (top10.get(i).getPlayerId() == sessionID && highscoreInTop10) {
+            //if (top10.get(i).getName().contains("Max") && highscoreInTop10) {
                 tr.setBackgroundColor(Color.RED);
                 tr.getBackground().setAlpha(127);
             }
@@ -96,7 +109,6 @@ public class BoardActivity extends AppCompatActivity {
                 tl.addView(tv);
 
                 //The need of the user highscore object if he is not in the top 10
-                me = hmt.getMyHighscore(sessionID);
 
                 tr.setBackgroundColor(Color.RED);
                 tr.getBackground().setAlpha(127);
@@ -136,6 +148,27 @@ public class BoardActivity extends AppCompatActivity {
         }
     }
 
+    private static Highscore me = null;
+
+
+    class MyHTask extends AsyncTask<Integer, Void, Highscore>{
+
+        @Override
+        protected Highscore doInBackground(Integer... params){
+            Log.d("myAPP", "sessionID in der doInBackground-Methode: "+ sessionID);
+            Highscore me = stub.getMyHighscore(sessionID);
+            Log.d("myAPP", "ME Objekt: "+me.toString());
+            BoardActivity.me = me;
+            return me;
+        }
+
+        @Override
+        protected void onPostExecute(Highscore me){
+            super.onPostExecute(me);
+            createViewForUsers(1, false);
+        }
+    }
+
     /**
      * Inner Class for Asyn-Task
      * onPreExecute displays a loading Element to ensure that the app is loading data
@@ -165,7 +198,8 @@ public class BoardActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            return hmt.getTop10();
+            //return hmt.getTop10();
+            return stub.getTop10();
         }
 
         protected void onPostExecute(ArrayList top10){

@@ -18,10 +18,12 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
-    /*
-     * Activity to sign in the user with his google account (mail address and password)
-     * @author JuliusSchengber
-     */
+import seng1.rockpapertoe.Remote.RockPaperToeServerStub;
+
+/*
+ * Activity to sign in the user with his google account (mail address and password)
+ * @author JuliusSchengber
+ */
 public class SignInActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {

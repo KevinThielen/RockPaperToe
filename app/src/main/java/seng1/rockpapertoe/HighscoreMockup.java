@@ -17,6 +17,7 @@ public class HighscoreMockup {
      *
      * @author Antonios Kouklidis
      */
+    /*
     public HighscoreMockup() {
         a = new Highscore();
         b = new Highscore();
@@ -102,6 +103,7 @@ public class HighscoreMockup {
         highscores.add(h);
         highscores.add(k);
     }
+    */
 
     /**
      * An ArrayList with all objects will be sorted
@@ -109,6 +111,8 @@ public class HighscoreMockup {
      *
      * @author Antonios Kouklidis
      */
+
+    /*
     public ArrayList<Highscore> getTop10(){
         Collections.sort(highscores);
 
@@ -128,12 +132,15 @@ public class HighscoreMockup {
 
         return top10;
     }
+    */
 
     /**
      * Get the current user highscore object
      *
      * @author Antonios Kouklidis
      */
+
+
     public Highscore getMyHighscore(int id){
         if(id > 0)
             for(int i=0; i < highscores.size(); i++){
@@ -142,4 +149,5 @@ public class HighscoreMockup {
             }
         return null;
     }
+
 }

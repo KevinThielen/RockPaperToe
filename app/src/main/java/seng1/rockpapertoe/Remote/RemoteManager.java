@@ -11,8 +11,9 @@ import org.ksoap2.transport.HttpTransportSE;
 
 
 public class RemoteManager {
-    private static final String NAMESPACE = "http://RockPaperToe.Server.de/";
-    private static final String URL = "http://localhost:8080/RockPaperToe/RockPaperToeServer";
+    private static final String NAMESPACE = "http://Server.RockPaperToe.de/";
+    //private static final String URL = "http://192.168.178.84:8080/UnoServer/RockPaperToeServer";
+    private static final String URL = "http://localhost:8080/UnoServer/RockPaperToeServer";
     private static final String TAG = RockPaperToeServerStub.class.getName();
 
     public SoapObject executeSoapAction(String methodName, Object... args) {

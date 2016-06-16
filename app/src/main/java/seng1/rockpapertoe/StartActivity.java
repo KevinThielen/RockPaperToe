@@ -3,8 +3,12 @@ package seng1.rockpapertoe;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+
+import seng1.rockpapertoe.Remote.RockPaperToeServerStub;
 
     /*
     * Startscreen after the user has logged in

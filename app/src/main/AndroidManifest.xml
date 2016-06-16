@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="seng1.rockpapertoe">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
@@ -11,13 +13,13 @@
 
         <activity android:name=".StartActivity" />
         <activity android:name=".PrefsActivity" />
-        <activity android:name=".BoardActivity" />
-        <activity android:name=".GameActivity"/>
-        <activity android:name=".SignInActivity">
+        <activity android:name=".BoardActivity" >
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
         </activity>
+        <activity android:name=".GameActivity"/>
+        <activity android:name=".SignInActivity"/>
     </application>
 </manifest>
