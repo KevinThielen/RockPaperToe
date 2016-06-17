@@ -27,7 +27,7 @@ public class SignInActivity extends AppCompatActivity implements
         View.OnClickListener {
 
     private static final String TAG = "SignInActivity";
-    private static final int signinCode = 9001;
+    private static final int signinCode = 1;
 
     private GoogleApiClient apiClient;
     private TextView statusTextView;
@@ -86,6 +86,7 @@ public class SignInActivity extends AppCompatActivity implements
             Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = cachedSignIn.get();
             handleSignInResult(result);
+
         } else {
             // If the user has not previously signed in on this device or the sign-in has expired,
             // this asynchronous branch will attempt to sign in the user silently.  Cross-device
