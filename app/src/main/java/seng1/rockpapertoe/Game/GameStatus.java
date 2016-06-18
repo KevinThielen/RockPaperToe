@@ -1,17 +1,17 @@
 package seng1.rockpapertoe.Game;
 
 /**
- * Created by andre on 14.06.2016.
+ * Created by Andre Tegeder
  */
 public class GameStatus {
-
+    // The unique ID from the Game
     int gameId;
+    // If your turn is True the player is an order to make a move
     boolean yourTourn;
+    // This is your victim at the game
     Player opponent;
+    // Number of your current round
     int round;
-
-
-
 
     public GameStatus(int gameId, boolean yourTourn,Player opponent, int round ) {
         this.gameId = gameId;
@@ -51,7 +51,6 @@ public class GameStatus {
     public void setRound(int round) {
         this.round = round;
     }
-
 
 }
 
