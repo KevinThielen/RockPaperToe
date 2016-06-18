@@ -1,5 +1,6 @@
 package seng1.rockpapertoe;
 
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +8,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import seng1.rockpapertoe.Game.*;
 
+/**
+ * This Class extends the Game
+ * @author André Tegeder
+ * @author Kevin Thielen
+ */
 
 public class GameActivity extends AppCompatActivity {
     //remote server, currently a stub
@@ -35,6 +41,7 @@ public class GameActivity extends AppCompatActivity {
 
         setButtons();
         setInputListener();
+        setPlayerNames();
         updateBoard();
     }
 
@@ -44,6 +51,7 @@ public class GameActivity extends AppCompatActivity {
      * und put them int an 2D-array.
      *
      * @author Kevin Thielen
+     * @author Andre Tegeder
      */
     void setButtons() {
         buttons = new Button[3][3];
@@ -75,6 +83,18 @@ public class GameActivity extends AppCompatActivity {
     }
 
     /**
+     * Set the player names to the views to
+     * see witch Player are playing in this game
+     * @author Andre Tegeder
+     */
+    void setPlayerNames(){
+        gameServer.getPlayer(0).getName();
+        opponentView.setText(gameServer.getPlayer(1).getName());
+        //TODO: wie kommt man an den Gegner
+        playerView.setText(gameServer.getPlayer(0).getName());
+    }
+
+    /**
      * Translates the button press into a move
      * Takes the button x and y position to translate the button press
      * into a player action. The action will be sent to the server
@@ -96,7 +116,6 @@ public class GameActivity extends AppCompatActivity {
         }
     };
 
-
     /**
      * Updates the board state
      * Sets the value for each button, depending on the board state.
@@ -105,17 +124,45 @@ public class GameActivity extends AppCompatActivity {
      * will be set to gray. The text represents the ECell value.
      *
      * @author Kevin Thielen
+     * @author André Tegeder
      */
     void updateBoard() {
         Cell board[][] = gameServer.getBoard();
         for(int x = 0; x<3; x++) {
             for (int y = 0; y < 3; y++) {
-                buttons[x][y].setText(cellToText(board[x][y].getValue()));
-                buttons[x][y].setBackgroundColor(cellToColor(board[x][y].getOwner()));
+                // chosse the right image to set is a source
+                switch (board[x][y].getValue()){
+                    case ROCK:
+                        //choose wether the player is the owner or not. Owner gets blue Images. The opponent red
+                        if (cellToColor(board[x][y].getOwner())== true){
+                            buttons[x][y].setBackgroundResource(R.drawable.ic_rock_blue);
+                        }
+                        else {
+                            buttons[x][y].setBackgroundResource(R.drawable.ic_rock_red);
+                        }
+                        break;
+                    case SCISSOR:
+                        //choose wether the player is the owner or not. Owner gets blue Images. The opponent red
+                        if (cellToColor(board[x][y].getOwner())== true){
+                            buttons[x][y].setBackgroundResource(R.drawable.ic_scissor_blue);
+                        }
+                        else {
+                            buttons[x][y].setBackgroundResource(R.drawable.ic_scissor_red);
+                        }
+                        break;
+                    case PAPER:
+                        //choose wether the player is the owner or not. Owner gets blue Images. The opponent red
+                        if (cellToColor(board[x][y].getOwner())== true){
+                            buttons[x][y].setBackgroundResource(R.drawable.ic_paper_blue);
+                        }
+                        else {
+                            buttons[x][y].setBackgroundResource(R.drawable.ic_paper_red);
+                        }
+                        break;
+                }
                 buttons[x][y].invalidate();
             }
         }
-
         player = gameServer.getCurrentPlayer();
     }
 
@@ -123,27 +170,28 @@ public class GameActivity extends AppCompatActivity {
     String cellToText(ECell value) {
         switch (value) {
             case ROCK:
-                return "Rock";
+                return "rock";
             case PAPER:
                 return "Paper";
             case SCISSOR:
                 return "Scissor";
         }
-
         return "EMPTY";
     }
 
-    int cellToColor(Player owner) {
-
-        if (owner == null) {
-            return 0x44444444;
-        }
+    /**
+     * Creats a boolean with shows the owner
+     * @author Andre Tegeder
+     * @param owner Player Object
+     * @return Boolean true = Player is the owner
+     */
+    boolean cellToColor(Player owner) {
 
         if (owner == gameServer.getPlayer(0)) {
-            return playerView.getCurrentTextColor();
+            return true;
         }
         else
-            return opponentView.getCurrentTextColor();
+            return false;
     }
 
 }
