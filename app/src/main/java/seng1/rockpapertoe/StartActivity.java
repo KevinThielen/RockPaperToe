@@ -35,7 +35,7 @@ public class StartActivity extends AppCompatActivity {
         play.setOnClickListener(new View.OnClickListener() {
             //start Play Activity
             public void onClick(View w) {
-                startActivity(new Intent(StartActivity.this, GameActivity.class));
+                startActivity(new Intent(StartActivity.this, GameStatusListActivity.class));
             }
         });
 

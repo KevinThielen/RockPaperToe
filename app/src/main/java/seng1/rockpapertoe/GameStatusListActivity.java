@@ -6,13 +6,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
-
-import seng1.rockpapertoe.Game.Game;
 import seng1.rockpapertoe.Game.GameStatus;
 import seng1.rockpapertoe.Game.GameStatusMockup;
 
@@ -28,6 +26,10 @@ public class GameStatusListActivity extends AppCompatActivity {
     private ArrayList<GameStatus> gmsList;
     // ListView witch shows Games ans Status
     private ListView listView;
+    //Start Button object
+    private Button startButton;
+    // ImageButton object
+    private ImageButton refreshButton;
 
     /**
      * Loads content and design on cerateing the activity
@@ -44,12 +46,15 @@ public class GameStatusListActivity extends AppCompatActivity {
         new GameStatusDataLoadingTask().execute();
         // ListView of the activity find by her id
         listView = (ListView) findViewById(R.id.listViewGameStatus);
+        // Button of the activity find by his id
+        startButton = (Button) findViewById(R.id.buttonStartGame);
+        //Button of the activity find by his id
+        refreshButton = (ImageButton) findViewById(R.id.buttonRefresh);
         //TODO Mochup austauschen
         gmsList = gms.getGameStatuses();
         games = gmsList;
 
-
-       }
+    }
 
     /**
      * This Method add the Gamestatus adapter to show custom listitem in listview
@@ -77,6 +82,35 @@ public class GameStatusListActivity extends AppCompatActivity {
                 }
             }
         );
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newGame();
+            }
+        });
+
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newGame();
+            }
+        });
+    }
+
+    /**
+     * Refresh the list of games form Server
+     * author Andre Tegeder
+     */
+    void refreshList(){
+        new GameStatusDataLoadingTask().execute();
+    }
+    /**
+     * Add a new game to the list
+     * author Andre Tegeder
+     */
+    void newGame(){
+        //TODO neues Game anfügen
+        new GameStatusDataLoadingTask().execute();
     }
 
     /**
@@ -102,11 +136,12 @@ public class GameStatusListActivity extends AppCompatActivity {
             protected ArrayList<GameStatus> doInBackground(String... params){
 
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(3000);
                 }
                 catch(InterruptedException e){
                     e.printStackTrace();
                 }
+                //TODO Mockup austsuchen
                 return gms.getGameStatuses();
             }
 
@@ -116,4 +151,5 @@ public class GameStatusListActivity extends AppCompatActivity {
                 setClickListener();
             }
         }
+
 }
