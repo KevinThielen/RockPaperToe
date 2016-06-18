@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Created by andre on 14.06.2016.
+ * Created by Andre Tegeder on 14.06.2016.
  */
 public class GameStatusMockup {
 
@@ -13,6 +13,10 @@ public class GameStatusMockup {
 
     private ArrayList<GameStatus> gameStatuses;
 
+    /**
+     * Creats some test data for testing gamestatus methods.
+     * @author  Andre Tegeder
+     */
     public GameStatusMockup() {
 
         pla = new Player("Antonios");
@@ -80,7 +84,10 @@ public class GameStatusMockup {
 
 
     }
-
+    /**
+     * Get an arraylist of gamestatus object
+     * @author Antonios Kouklidis
+    */
     public ArrayList<GameStatus> getGameStatuses(){
 
        return gameStatuses;
