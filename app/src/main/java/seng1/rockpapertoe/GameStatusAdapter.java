@@ -38,11 +38,11 @@ public class GameStatusAdapter extends ArrayAdapter<GameStatus> {
 
         if (gameStatus.isYourTourn() == true){
             ImageView imageView = (ImageView) convertView.findViewById(R.id.list_image);
-            imageView.setImageResource(R.drawable.ic_mood_black_24dp);
+            imageView.setImageResource(R.drawable.ic_play_circle_outline_black_24dp);
         }
         else {
             ImageView imageView = (ImageView) convertView.findViewById(R.id.list_image);
-            imageView.setImageResource(R.drawable.ic_mood_bad_black_24dp);
+            imageView.setImageResource(R.drawable.ic_pause_circle_outline_black_24dp);
         }
         // Return the completed view to render on screen
         return convertView;
