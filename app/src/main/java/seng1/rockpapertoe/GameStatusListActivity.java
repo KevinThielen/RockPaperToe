@@ -17,16 +17,23 @@ import seng1.rockpapertoe.Game.GameStatus;
 import seng1.rockpapertoe.Game.GameStatusMockup;
 
 /**
- * Created by andre on 15.06.2016.
+ * Created by André Tegeder
  */
 public class GameStatusListActivity extends AppCompatActivity {
-    //lIst if Games and there Status
+    //List of  GamesStatus
     private ArrayList<GameStatus> games;
     //Mockup TestData
     private GameStatusMockup gms;
     //Mockup Arraylist
     private ArrayList<GameStatus> gmsList;
+    // ListView witch shows Games ans Status
+    private ListView listView;
 
+    /**
+     * Loads content and design on cerateing the activity
+     * @author Andre Tegeder
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -35,60 +42,78 @@ public class GameStatusListActivity extends AppCompatActivity {
         gms =  new GameStatusMockup();
         //Async-Task execution
         new GameStatusDataLoadingTask().execute();
+        // ListView of the activity find by her id
+        listView = (ListView) findViewById(R.id.listViewGameStatus);
         //TODO Mochup austauschen
         gmsList = gms.getGameStatuses();
         games = gmsList;
-         ArrayList<GameStatus> gameStatusArrayList = new ArrayList<GameStatus>();
-        GameStatusAdapter gameStatusAdapter = new GameStatusAdapter(this, gameStatusArrayList);
-        final ListView listView = (ListView) findViewById(R.id.listViewGameStatus);
-        listView.setAdapter(gameStatusAdapter);
 
+
+       }
+
+    /**
+     * This Method add the Gamestatus adapter to show custom listitem in listview
+     * @author Andre Tegeder
+     */
+    void setListAdapter(){
+        GameStatusAdapter gameStatusAdapter = new GameStatusAdapter(this, games);
+        listView.setAdapter(gameStatusAdapter);
+        gameStatusAdapter.addAll(games);
+    }
+
+    /**
+     * Add a clicklistener to the listview of gamestatus
+     * @author Andre Tegeder
+     */
+    void setClickListener(){
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            /**
-             * This Method show the GameId from clicked item in the list
-             * @param position Position of item in luist
-             */
-                @Override
+            @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
 
-                   int index = games.get(position).getGameId();
+                    int index = games.get(position).getGameId();
                     //TODO ID weitergeben im in das Spiel zugelangen
                     String strI = String.valueOf(index);
                     Toast.makeText(getBaseContext(), strI, Toast.LENGTH_LONG).show();
                 }
             }
         );
-        gameStatusAdapter.addAll(games);
-       }
+    }
 
-
+    /**
+     * Inner Class for Asyn-Task
+     * onPreExecute displays a loading Element to ensure that the app is loading data
+     * doInBackground is loading Data from the Database (Mockup) and returns an ArrayList with gamestatus objects
+     * onPostExecute hides the loading Element
+     * @author Andre Tegeder
+     */
     class GameStatusDataLoadingTask extends AsyncTask<String, Void, ArrayList> {
 
         private ProgressDialog pd = new ProgressDialog(GameStatusListActivity.this);
 
-        @Override
-        protected void onPreExecute(){
-            this.pd.setMessage("Loading Games");
-            this.pd.setIndeterminate(false);
-            this.pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            this.pd.setCancelable(true);
-            this.pd.show();
-        }
-
-        protected ArrayList<GameStatus> doInBackground(String... params){
-
-            try {
-                Thread.sleep(1000);
-            }catch(InterruptedException e){
-                e.printStackTrace();
+            @Override
+            protected void onPreExecute(){
+                this.pd.setMessage("Loading Games");
+                this.pd.setIndeterminate(false);
+                this.pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                this.pd.setCancelable(true);
+                this.pd.show();
             }
 
-            return gms.getGameStatuses();
-        }
+            protected ArrayList<GameStatus> doInBackground(String... params){
 
-        protected void onPostExecute(ArrayList gms){
-            this.pd.dismiss();
+                try {
+                    Thread.sleep(5000);
+                }
+                catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+                return gms.getGameStatuses();
+            }
 
+            protected void onPostExecute(ArrayList gms){
+                this.pd.dismiss();
+                setListAdapter();
+                setClickListener();
+            }
         }
-    }
 }
