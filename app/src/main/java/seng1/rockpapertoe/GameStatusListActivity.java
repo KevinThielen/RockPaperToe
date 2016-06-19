@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import seng1.rockpapertoe.Game.GameStatus;
 import seng1.rockpapertoe.Game.GameStatusMockup;
+import seng1.rockpapertoe.Remote.RockPaperToeServerStub;
+import seng1.rockpapertoe.Remote.Session;
 
 /**
  * Created by André Tegeder
@@ -21,7 +24,7 @@ public class GameStatusListActivity extends AppCompatActivity {
     //List of  GamesStatus
     private ArrayList<GameStatus> games;
     //Mockup TestData
-    private GameStatusMockup gms;
+    private RockPaperToeServerStub gms;
     //Mockup Arraylist
     private ArrayList<GameStatus> gmsList;
     // ListView witch shows Games ans Status
@@ -31,6 +34,7 @@ public class GameStatusListActivity extends AppCompatActivity {
     // ImageButton object
     private ImageButton refreshButton;
 
+    Session session;
     /**
      * Loads content and design on cerateing the activity
      * @author Andre Tegeder
@@ -39,9 +43,11 @@ public class GameStatusListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+        session = new Session(getApplicationContext());
         setContentView(R.layout.activity_gamestatus);
         // GameStatus object for client
-        gms =  new GameStatusMockup();
+        gms =  new RockPaperToeServerStub();
         //Async-Task execution
         new GameStatusDataLoadingTask().execute();
         // ListView of the activity find by her id
@@ -50,10 +56,6 @@ public class GameStatusListActivity extends AppCompatActivity {
         startButton = (Button) findViewById(R.id.buttonStartGame);
         //Button of the activity find by his id
         refreshButton = (ImageButton) findViewById(R.id.buttonRefresh);
-        //TODO Mochup austauschen
-        gmsList = gms.getGameStatuses();
-        games = gmsList;
-
     }
 
     /**
@@ -62,8 +64,12 @@ public class GameStatusListActivity extends AppCompatActivity {
      */
     void setListAdapter(){
         GameStatusAdapter gameStatusAdapter = new GameStatusAdapter(this, games);
+
         listView.setAdapter(gameStatusAdapter);
-        gameStatusAdapter.addAll(games);
+
+        Log.d("ListAdapter", "Number of games in Adapter: "+games.size());
+      //  gameStatusAdapter.addAll(games);
+      //  gameStatusAdapter.clear();
     }
 
     /**
@@ -76,6 +82,7 @@ public class GameStatusListActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
 
                     int index = games.get(position).getGameId();
+                    Log.d("Click on", "Game Id selected"+index);
                     //TODO ID weitergeben im in das Spiel zugelangen
                     String strI = String.valueOf(index);
                     Toast.makeText(getBaseContext(), strI, Toast.LENGTH_LONG).show();
@@ -92,7 +99,7 @@ public class GameStatusListActivity extends AppCompatActivity {
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newGame();
+                refreshList();
             }
         });
     }
@@ -109,8 +116,7 @@ public class GameStatusListActivity extends AppCompatActivity {
      * author Andre Tegeder
      */
     void newGame(){
-        //TODO neues Game anfügen
-        new GameStatusDataLoadingTask().execute();
+        new GameStatusNewGameTask().execute();
     }
 
     /**
@@ -134,15 +140,11 @@ public class GameStatusListActivity extends AppCompatActivity {
             }
 
             protected ArrayList<GameStatus> doInBackground(String... params){
+                ArrayList<GameStatus> result = gms.getGames(session.getSessionId());
+                games = new ArrayList<>();
+                games = result;
 
-                try {
-                    Thread.sleep(3000);
-                }
-                catch(InterruptedException e){
-                    e.printStackTrace();
-                }
-                //TODO Mockup austsuchen
-                return gms.getGameStatuses();
+                return result;
             }
 
             protected void onPostExecute(ArrayList gms){
@@ -152,4 +154,36 @@ public class GameStatusListActivity extends AppCompatActivity {
             }
         }
 
+    /**
+     * Inner Class for Asyn-Task
+     * @author Andre Tegeder, Kevin Thielen
+     */
+    class GameStatusNewGameTask extends AsyncTask<String, Void, ArrayList> {
+
+        private ProgressDialog pd = new ProgressDialog(GameStatusListActivity.this);
+
+        @Override
+        protected void onPreExecute(){
+            this.pd.setMessage("Loading Games");
+            this.pd.setIndeterminate(false);
+            this.pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            this.pd.setCancelable(true);
+            this.pd.show();
+        }
+
+        protected ArrayList<GameStatus> doInBackground(String... params){
+            ArrayList<GameStatus> result = gms.findNewGame(session.getSessionId());
+
+            games = new ArrayList<>();
+            games = result;
+            Log.d("GameList", "Found "+result.size()+" games");
+            return result;
+        }
+
+        protected void onPostExecute(ArrayList gms){
+            this.pd.dismiss();
+            setListAdapter();
+            setClickListener();
+        }
+    }
 }

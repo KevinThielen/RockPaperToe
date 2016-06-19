@@ -15,12 +15,15 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import seng1.rockpapertoe.Remote.RockPaperToeServerStub;
+import seng1.rockpapertoe.Remote.Session;
 
 
 public class BoardActivity extends AppCompatActivity {
 
+    Session session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board);
 
@@ -29,7 +32,9 @@ public class BoardActivity extends AppCompatActivity {
 
         //this.sessionID = new Random().nextInt(11) +1;
         //this.sessionID = new Random().nextInt(10) +1;
-        this.sessionID = 10;
+        session = new Session(getApplicationContext());
+
+        this.sessionID = session.getSessionId();
 
         stub = new RockPaperToeServerStub();
     }

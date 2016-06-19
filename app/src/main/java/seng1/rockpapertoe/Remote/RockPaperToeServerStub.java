@@ -11,6 +11,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import seng1.rockpapertoe.Game.Cell;
+import seng1.rockpapertoe.Game.ECell;
+import seng1.rockpapertoe.Game.GameState;
+import seng1.rockpapertoe.Game.GameStatus;
+import seng1.rockpapertoe.Game.Player;
 import seng1.rockpapertoe.Highscore;
 
 public class RockPaperToeServerStub {
@@ -35,19 +40,90 @@ public class RockPaperToeServerStub {
         return null;
     }
 
-    public boolean register(String id, String userName) {
+    public SessionResponse register(String id, String userName) {
         SoapObject response = remote.executeSoapAction("register", id, userName);
 
         int returnCode = Integer.parseInt(response.getPrimitivePropertySafelyAsString("returnCode"));
 
         Log.d("Response", response.toString());
         if(returnCode == 0) {
+            String name = response.getPrimitivePropertySafelyAsString("userName");
             int sessionId = Integer.parseInt(response.getPrimitivePropertySafelyAsString("sessionId"));
-            return true;
+            return new SessionResponse(sessionId, name);
         }
-        return false;
+        return null;
     }
 
+    public ArrayList<GameStatus> findNewGame(int sessionId) {
+        ArrayList<GameStatus> games = new ArrayList<>();
+
+        SoapObject response = remote.executeSoapAction("newGame", sessionId);
+        Log.d("Response", response.toString());
+
+        int returnCode = Integer.parseInt(response.getPrimitivePropertyAsString("returnCode"));
+        if(returnCode == 0) {
+            for(int i = 1; i < response.getPropertyCount(); i++) {
+                SoapObject gameState = (SoapObject) response.getProperty(i);
+
+
+                int gameId = Integer.parseInt(gameState.getPrimitivePropertySafelyAsString("gameId"));
+                String opponent = gameState.getPrimitivePropertySafelyAsString("opponent");
+                int currentTurn = Integer.parseInt(gameState.getPrimitivePropertySafelyAsString("currentTurn"));
+                boolean yourTurn = !Boolean.parseBoolean(gameState.getPrimitivePropertySafelyAsString("opponentsTurn"));
+
+                GameStatus gameStatus = new GameStatus(gameId, yourTurn, new Player(opponent), currentTurn );
+                games.add(gameStatus);
+            }
+        }
+        return games;
+    }
+
+    public GameState getGameState(int sessionId) {
+        SoapObject response = remote.executeSoapAction("getGameState", sessionId);
+        Log.d("Response", response.toString());
+
+        String opponent = response.getPrimitivePropertySafelyAsString("opponent");
+        boolean opponentsTurn = Boolean.parseBoolean(response.getPrimitivePropertyAsString("opponentsTurn"));
+        boolean gameOver = Boolean.parseBoolean(response.getPrimitivePropertyAsString("gameOver"));
+        String currentValue = response.getPrimitivePropertyAsString("currentValue");
+        boolean won = Boolean.parseBoolean(response.getPrimitivePropertyAsString("won"));
+
+        Cell[][] board = new Cell[3][3];
+        for(int x = 0; x<3; x++) {
+            for(int y = 0; y<3; y++) {
+                board[x][y] = new Cell();
+            }
+        }
+        return new GameState(opponent, opponentsTurn,  ECell.valueOf(currentValue), gameOver, won, board);
+
+    }
+    public ArrayList<GameStatus> getGames(int sessionId) {
+        ArrayList<GameStatus> games = new ArrayList<>();
+
+        SoapObject response = remote.executeSoapAction("getGames", sessionId);
+        Log.d("Response", response.toString());
+
+        int returnCode = Integer.parseInt(response.getPrimitivePropertyAsString("returnCode"));
+        if(returnCode == 0) {
+            Log.d("GameSTati", "Number of properties: "+response.getPropertyCount());
+
+            for(int i = 1; i < response.getPropertyCount(); i++) {
+
+                SoapObject gameState = (SoapObject) response.getProperty(i);
+
+
+                int gameId = Integer.parseInt(gameState.getPrimitivePropertySafelyAsString("gameId"));
+                Log.d("Game id ", "Id: "+gameId);
+                String opponent = gameState.getPrimitivePropertySafelyAsString("opponent");
+                int currentTurn = Integer.parseInt(gameState.getPrimitivePropertySafelyAsString("currentTurn"));
+                boolean yourTurn = !Boolean.parseBoolean(gameState.getPrimitivePropertySafelyAsString("opponentsTurn"));
+
+                GameStatus gameStatus = new GameStatus(gameId, yourTurn, new Player(opponent), currentTurn );
+                games.add(gameStatus);
+            }
+        }
+        return games;
+    }
     private final String x = "myAPP";
 
     public Highscore getMyHighscore(int myPlayerId){

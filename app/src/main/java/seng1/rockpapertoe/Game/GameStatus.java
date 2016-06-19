@@ -13,7 +13,7 @@ public class GameStatus {
     // Number of your current round
     int round;
 
-    public GameStatus(int gameId, boolean yourTourn,Player opponent, int round ) {
+    public GameStatus(int gameId, boolean yourTourn, Player opponent, int round ) {
         this.gameId = gameId;
         this.yourTourn = yourTourn;
         this.opponent = opponent;

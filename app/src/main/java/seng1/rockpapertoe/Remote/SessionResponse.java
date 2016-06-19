@@ -13,15 +13,15 @@ public class SessionResponse {
         this.userName = userName;
     }
 
-    boolean isValidSession() {
-        return sessionId > 0;
+    public boolean isValidSession() {
+        return sessionId >= 0;
     }
 
-    int getSessionId() {
+    public int getSessionId() {
         return sessionId;
     }
 
-    String getUserName() {
+    public String getUserName() {
         return userName;
     }
 }

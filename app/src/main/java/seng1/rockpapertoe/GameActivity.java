@@ -1,12 +1,20 @@
 package seng1.rockpapertoe;
 
+import android.app.ProgressDialog;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+
 import seng1.rockpapertoe.Game.*;
+import seng1.rockpapertoe.Remote.RockPaperToeServerStub;
+import seng1.rockpapertoe.Remote.Session;
 
 /**
  * This Class extends the Game
@@ -16,10 +24,8 @@ import seng1.rockpapertoe.Game.*;
 
 public class GameActivity extends AppCompatActivity {
     //remote server, currently a stub
-    Game gameServer;
-
-    //currentPlayer, will be changed to owner of activity when server goes live
-    Player player;
+    RockPaperToeServerStub stub;
+    Session session;
 
     //buttons for player actions. Range [0,0],[3,3]
     Button buttons[][];
@@ -28,21 +34,29 @@ public class GameActivity extends AppCompatActivity {
     TextView playerView;
     //Opponent´s name as Textview
     TextView opponentView;
+    int gameId;
+    GameState gameState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            gameId = extras.getInt("gameId");
+        }
+
         setContentView(R.layout.activity_game);
 
-        gameServer = new Game();
+        stub = new RockPaperToeServerStub();
+        session = new Session(getApplicationContext());
 
         playerView = (TextView) findViewById(R.id.playerView);
         opponentView = (TextView) findViewById(R.id.opponentsView);
 
         setButtons();
         setInputListener();
-        setPlayerNames();
-        updateBoard();
+        new GameStateTask().execute();
     }
 
     /**
@@ -88,10 +102,9 @@ public class GameActivity extends AppCompatActivity {
      * @author Andre Tegeder
      */
     void setPlayerNames(){
-        gameServer.getPlayer(0).getName();
-        opponentView.setText(gameServer.getPlayer(1).getName());
-        //TODO: wie kommt man an den Gegner
-        playerView.setText(gameServer.getPlayer(0).getName());
+        opponentView.setText(gameState.getOpponent());
+
+        playerView.setText(session.getUserName());
     }
 
     /**
@@ -107,7 +120,7 @@ public class GameActivity extends AppCompatActivity {
             for(int x = 0; x<3; x++) {
                 for (int y = 0; y < 3; y++) {
                     if(buttons[x][y].getId() == v.getId()) {
-                        gameServer.makeMove(player, x, y);
+                        //gameServer.makeMove(player, x, y);
                         break;
                     }
                 }
@@ -127,14 +140,14 @@ public class GameActivity extends AppCompatActivity {
      * @author André Tegeder
      */
     void updateBoard() {
-        Cell board[][] = gameServer.getBoard();
+        Cell board[][] = gameState.getBoard();
         for(int x = 0; x<3; x++) {
             for (int y = 0; y < 3; y++) {
                 // chosse the right image to set is a source
                 switch (board[x][y].getValue()){
                     case ROCK:
                         //choose wether the player is the owner or not. Owner gets blue Images. The opponent red
-                        if (cellToColor(board[x][y].getOwner())== true){
+                        if (board[x][y].getOwner()){
                             buttons[x][y].setBackgroundResource(R.drawable.ic_rock_blue);
                         }
                         else {
@@ -143,7 +156,7 @@ public class GameActivity extends AppCompatActivity {
                         break;
                     case SCISSOR:
                         //choose wether the player is the owner or not. Owner gets blue Images. The opponent red
-                        if (cellToColor(board[x][y].getOwner())== true){
+                        if (board[x][y].getOwner()){
                             buttons[x][y].setBackgroundResource(R.drawable.ic_scissor_blue);
                         }
                         else {
@@ -152,7 +165,7 @@ public class GameActivity extends AppCompatActivity {
                         break;
                     case PAPER:
                         //choose wether the player is the owner or not. Owner gets blue Images. The opponent red
-                        if (cellToColor(board[x][y].getOwner())== true){
+                        if (board[x][y].getOwner()){
                             buttons[x][y].setBackgroundResource(R.drawable.ic_paper_blue);
                         }
                         else {
@@ -163,35 +176,31 @@ public class GameActivity extends AppCompatActivity {
                 buttons[x][y].invalidate();
             }
         }
-        player = gameServer.getCurrentPlayer();
     }
 
-    //TEMPORARY HELPER
-    String cellToText(ECell value) {
-        switch (value) {
-            case ROCK:
-                return "rock";
-            case PAPER:
-                return "Paper";
-            case SCISSOR:
-                return "Scissor";
+
+    class GameStateTask extends AsyncTask<String, Void, GameState> {
+
+        private ProgressDialog pd = new ProgressDialog(GameActivity.this);
+
+        @Override
+        protected void onPreExecute(){
+            this.pd.setMessage("Loading GameState");
+            this.pd.setIndeterminate(false);
+            this.pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            this.pd.setCancelable(false);
+            this.pd.show();
         }
-        return "EMPTY";
-    }
 
-    /**
-     * Creats a boolean with shows the owner
-     * @author Andre Tegeder
-     * @param owner Player Object
-     * @return Boolean true = Player is the owner
-     */
-    boolean cellToColor(Player owner) {
-
-        if (owner == gameServer.getPlayer(0)) {
-            return true;
+        protected GameState doInBackground(String... params){
+            GameState result = stub.getGameState(gameId);
+            return result;
         }
-        else
-            return false;
-    }
 
+        protected void onPostExecute(ArrayList gms){
+            this.pd.dismiss();
+            setPlayerNames();
+            updateBoard();
+        }
+    }
 }

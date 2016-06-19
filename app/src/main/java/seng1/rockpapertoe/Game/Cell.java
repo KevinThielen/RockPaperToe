@@ -4,12 +4,17 @@ package seng1.rockpapertoe.Game;
  * Created by kevin on 03.05.16.
  */
 public class Cell {
-    Player owner;
+    boolean owner;
     ECell value;
 
     public Cell() {
-        owner = null;
+        owner = false;
         value = ECell.EMPTY;
+    }
+
+    public Cell(boolean owned, ECell value) {
+        owner = false;
+        this.value = value;
     }
 
     public void setValue(ECell value) {
@@ -20,10 +25,10 @@ public class Cell {
         return value;
     }
 
-    public void setOwner(Player player) {
-        owner = player;
+    public void setOwner(boolean owned) {
+        owner = owned;
     }
-    public Player getOwner() {
+    public boolean getOwner() {
         return owner;
     }
 }

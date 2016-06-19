@@ -33,7 +33,12 @@ public class GameStatusAdapter extends ArrayAdapter<GameStatus> {
         TextView tvRound = (TextView) convertView.findViewById(R.id.tvRound);
 
         // Populate the data into the template view using the data object
-        tvOpponent.setText(gameStatus.getOpponent().getName());
+        if(gameStatus.getOpponent().getName().equals("")) {
+            tvOpponent.setText("Searching for Opponent.");
+        }
+        else {
+            tvOpponent.setText(gameStatus.getOpponent().getName());
+        }
         tvRound.setText("Round: " +gameStatus.getRound());
 
         if (gameStatus.isYourTourn() == true){

@@ -21,6 +21,7 @@ import com.google.android.gms.common.api.Status;
 
 import seng1.rockpapertoe.Remote.RockPaperToeServerStub;
 import seng1.rockpapertoe.Remote.Session;
+import seng1.rockpapertoe.Remote.SessionResponse;
 
 /*
  * Activity to sign in the user with his google account (mail address and password)
@@ -255,20 +256,21 @@ public class SignInActivity extends AppCompatActivity implements
     class LoginTask extends AsyncTask<String, Void, Boolean> {
 
         @Override
-        protected Boolean doInBackground(String... params){
-            if(params.length > 0) {
-                Boolean result = stub.login(params[0]);
+        protected Boolean doInBackground(String... params) {
+            if (params.length > 0) {
+                SessionResponse result = stub.login(params[0]);
 
-                if(!result) {
+                if (result == null || !result.isValidSession()) {
                     result = stub.register(params[0], params[1]);
 
                 }
-                if(result) {
+                if (result.isValidSession()) {
+                    session.setSessionId(result.getSessionId());
+                    session.setUserName(result.getUserName());
 
-
+                    return true;
                 }
-                    return result;
-                }
+            }
             return false;
         }
 
