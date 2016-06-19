@@ -1,6 +1,7 @@
 package seng1.rockpapertoe;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -92,7 +93,7 @@ public class GameStatusListActivity extends AppCompatActivity {
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newGame();
+                refreshList();
             }
         });
     }
@@ -112,6 +113,7 @@ public class GameStatusListActivity extends AppCompatActivity {
         //TODO neues Game anfügen
         new GameStatusDataLoadingTask().execute();
     }
+
 
     /**
      * Inner Class for Asyn-Task
