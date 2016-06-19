@@ -2,6 +2,7 @@ package seng1.rockpapertoe;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -18,13 +19,17 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
-    /*
-     * Activity to sign in the user with his google account (mail address and password)
-     * @author JuliusSchengber
-     */
+import seng1.rockpapertoe.Remote.RockPaperToeServerStub;
+import seng1.rockpapertoe.Remote.Session;
+
+/*
+ * Activity to sign in the user with his google account (mail address and password)
+ * @author JuliusSchengber
+ */
 public class SignInActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
+
 
     private static final String TAG = "SignInActivity";
     private static final int signinCode = 1;
@@ -32,12 +37,16 @@ public class SignInActivity extends AppCompatActivity implements
     private GoogleApiClient apiClient;
     private TextView statusTextView;
     private ProgressDialog progressDialog;
-
+    private RockPaperToeServerStub stub;
+    Session session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
+        stub = new RockPaperToeServerStub();
+        session = new Session(getApplicationContext());
+        session.setSessionId(-1);
         // Views
         statusTextView = (TextView) findViewById(R.id.status);
         /*
@@ -57,6 +66,7 @@ public class SignInActivity extends AppCompatActivity implements
         GoogleSignInOptions ops = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestProfile()
                 .requestEmail()
+                .requestId()
                 .build();
 
 
@@ -138,6 +148,11 @@ public class SignInActivity extends AppCompatActivity implements
             else{
                 statusTextView.setText("Angemeldet");
             }
+
+            String id = acct.getId();
+            String name = acct.getDisplayName();
+
+            new LoginTask().execute(id, name);
             //Signed in, show authenticated UI.
             updateUI(true);
         } else {
@@ -235,5 +250,27 @@ public class SignInActivity extends AppCompatActivity implements
                 switchToStart();
                 break;
         }
+    }
+
+    class LoginTask extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... params){
+            if(params.length > 0) {
+                Boolean result = stub.login(params[0]);
+
+                if(!result) {
+                    result = stub.register(params[0], params[1]);
+
+                }
+                if(result) {
+
+
+                }
+                    return result;
+                }
+            return false;
+        }
+
     }
 }
