@@ -23,7 +23,7 @@ import seng1.rockpapertoe.Remote.RockPaperToeServerStub;
 import seng1.rockpapertoe.Remote.Session;
 import seng1.rockpapertoe.Remote.SessionResponse;
 
-/*
+/**
  * Activity to sign in the user with his google account (mail address and password)
  * @author JuliusSchengber
  */
@@ -50,20 +50,16 @@ public class SignInActivity extends AppCompatActivity implements
         session.setSessionId(-1);
         // Views
         statusTextView = (TextView) findViewById(R.id.status);
-        /*
-        *setup Button listeners
-        * @author JuliusSchengber
-        */
 
+        //setup Button listeners
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
         findViewById(R.id.continue_button).setOnClickListener(this);
 
-       /*
-        * specify information to request from the user
-        * ID and basic profile are included in Default_SIGN_IN
-        * @author JuliusSchengber
-        */
+
+        // specify information to request from the user
+        // ID and basic profile are included in Default_SIGN_IN
+
         GoogleSignInOptions ops = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestProfile()
                 .requestEmail()
@@ -71,11 +67,9 @@ public class SignInActivity extends AppCompatActivity implements
                 .build();
 
 
+        //Build a GoogleApiClient with access to the Google Sign-In API and the
+        //options specified
 
-        /*Build a GoogleApiClient with access to the Google Sign-In API and the
-        *options specified
-        * @author JuliusSchengber
-        */
         apiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, ops)
@@ -90,10 +84,7 @@ public class SignInActivity extends AppCompatActivity implements
 
         OptionalPendingResult<GoogleSignInResult> cachedSignIn = Auth.GoogleSignInApi.silentSignIn(apiClient);
         if (cachedSignIn.isDone()) {
-            /*
-            * if the user has signed in before and it´s cached and valid, these information are used
-            * @author JuliusSchengber
-             */
+            //if the user has signed in before and it´s cached and valid, these information are used
             Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = cachedSignIn.get();
             handleSignInResult(result);
@@ -113,9 +104,12 @@ public class SignInActivity extends AppCompatActivity implements
         }
     }
 
-    /*
-     *get Sign in Result
+    /**
+     * get sign in result
      * @author JuliusSchengber
+     * @param requestCode
+     * @param resultCode
+     * @param data
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -128,19 +122,18 @@ public class SignInActivity extends AppCompatActivity implements
         }
     }
 
-    /*
-    *handle the Sign In Result
-    *@author JuliusSchengber
+    /**
+     * handle the sign in result
+     * @author JuliusSchengber
+     * @param result
      */
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
-            /*
-            *Signed in successfully, get user information
-            *and show user´s mail address
-            * in statusTextView
-            * @author JuliusSchengber
-             */
+
+            //Signed in successfully, get user information
+            //and show user´s mail address
+            //in statusTextView
             GoogleSignInAccount acct = result.getSignInAccount();
             String signinmail = acct.getEmail();
             if(signinmail != null) {
@@ -163,16 +156,18 @@ public class SignInActivity extends AppCompatActivity implements
     }
 
 
-    /*
-    *Sign in the user
+    /**
+     * Sign In the user
+     * @author JuliusSchengber
      */
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(apiClient);
         startActivityForResult(signInIntent, signinCode);
     }
 
-    /*
-    * sign out the user
+    /**
+     * sign out the user
+     * @author JuliusSchengber
      */
     private void signOut() {
         Auth.GoogleSignInApi.signOut(apiClient).setResultCallback(
@@ -184,6 +179,11 @@ public class SignInActivity extends AppCompatActivity implements
                 });
     }
 
+    /**
+     * Connection failed, Log Message with result
+     * @author JuliusSchengber
+     * @param connectionResult
+     */
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not
@@ -191,6 +191,10 @@ public class SignInActivity extends AppCompatActivity implements
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
 
+    /**
+     * Show ProgressDialog when loading
+     * @author JuliusSchengber
+     */
     private void showProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
@@ -201,18 +205,24 @@ public class SignInActivity extends AppCompatActivity implements
         progressDialog.show();
     }
 
+    /**
+     * Hide Progress Dialog
+     * @author JuliusSchengber
+     */
     private void hideProgressDialog() {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.hide();
         }
     }
 
-        /*
-        * update the User Interface depending on the information
-        * if the user is logged in or not
-        * show and hide those buttons
-        * @author JuliusSchengber
-         */
+
+    /**
+     * update the User Interface depending on the information
+     * if the user is logged in or not
+     * show and hide those buttons
+     * @author JuliusSchengber
+     * @param signedIn
+     */
     private void updateUI(boolean signedIn) {
         if (signedIn) {
             findViewById(R.id.sign_in_button).setVisibility(View.INVISIBLE);
@@ -226,18 +236,20 @@ public class SignInActivity extends AppCompatActivity implements
         }
     }
 
-        /*
-        * go to StartScreen
-        * @author JuliusSchengber
-         */
+    /**
+     * go to StartScreen
+     * @author JuliusSchengber
+     */
     public void switchToStart(){
         startActivity(new Intent(this, StartActivity.class));
     }
 
-        /*
-        * handle the actions after buttons get clicked
-        * @author JuliusSchengber
-         */
+
+    /**
+     * handle the actions after buttons get clicked
+     * @author JuliusSchengber
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

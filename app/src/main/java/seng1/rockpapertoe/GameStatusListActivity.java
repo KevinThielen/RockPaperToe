@@ -1,6 +1,7 @@
 package seng1.rockpapertoe;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -118,6 +119,7 @@ public class GameStatusListActivity extends AppCompatActivity {
     void newGame(){
         new GameStatusNewGameTask().execute();
     }
+
 
     /**
      * Inner Class for Asyn-Task

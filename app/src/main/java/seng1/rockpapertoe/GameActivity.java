@@ -1,6 +1,7 @@
 package seng1.rockpapertoe;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import android.widget.Toast;
 
 import seng1.rockpapertoe.Game.*;
 import seng1.rockpapertoe.Remote.RockPaperToeServerStub;
@@ -203,4 +205,22 @@ public class GameActivity extends AppCompatActivity {
             updateBoard();
         }
     }
+
+    /**
+     *  This Method show a Toast by losing a Game
+     * @author Andre Tegeder
+     */
+    void loseGame(){
+        Toast.makeText(getBaseContext(), "YOU LOSE", Toast.LENGTH_LONG).show();
+        startActivity(new Intent(GameActivity.this, GameStatusListActivity.class));
+    }
+    /**
+     *  This Method show a Toast by wining a Game
+     * @author Andre Tegeder
+     */
+    void winGame(){
+        Toast.makeText(getBaseContext(), "YOU WIN", Toast.LENGTH_LONG).show();
+        startActivity(new Intent(GameActivity.this, GameStatusListActivity.class));
+    }
+
 }

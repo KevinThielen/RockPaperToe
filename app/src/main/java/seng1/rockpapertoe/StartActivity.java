@@ -46,17 +46,6 @@ public class StartActivity extends AppCompatActivity {
                 startActivity(new Intent(StartActivity.this, BoardActivity.class));
             }
         });
-
-        final Button prefs = (Button) findViewById(R.id.prefs);
-        prefs.setOnClickListener(new View.OnClickListener() {
-            //start Preferences Activity
-            public void onClick(View y) {
-                startActivity(new Intent(StartActivity.this, PrefsActivity.class));
-            }
-        });
-
     }
-
-
 
 }
