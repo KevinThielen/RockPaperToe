@@ -82,11 +82,11 @@ public class GameStatusListActivity extends AppCompatActivity {
             @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
 
-                    int index = games.get(position).getGameId();
-                    Log.d("Click on", "Game Id selected"+index);
-                    //TODO ID weitergeben im in das Spiel zugelangen
-                    String strI = String.valueOf(index);
-                    Toast.makeText(getBaseContext(), strI, Toast.LENGTH_LONG).show();
+                    int gameId = games.get(position).getGameId();
+                    Log.d("Click on", "Game Id selected"+id);
+                    Intent intent = new Intent(getBaseContext(), GameActivity.class);
+                    intent.putExtra("gameID", gameId);
+                    startActivity(intent);
                 }
             }
         );

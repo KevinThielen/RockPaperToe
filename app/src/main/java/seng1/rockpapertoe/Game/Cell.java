@@ -13,7 +13,7 @@ public class Cell {
     }
 
     public Cell(boolean owned, ECell value) {
-        owner = false;
+        owner = owned;
         this.value = value;
     }
 

@@ -37,7 +37,7 @@ public class GameActivity extends AppCompatActivity {
     //Opponent´s name as Textview
     TextView opponentView;
     int gameId;
-    GameState gameState;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +103,7 @@ public class GameActivity extends AppCompatActivity {
      * see witch Player are playing in this game
      * @author Andre Tegeder
      */
-    void setPlayerNames(){
+    void setPlayerNames(GameState gameState){
         opponentView.setText(gameState.getOpponent());
 
         playerView.setText(session.getUserName());
@@ -122,12 +122,11 @@ public class GameActivity extends AppCompatActivity {
             for(int x = 0; x<3; x++) {
                 for (int y = 0; y < 3; y++) {
                     if(buttons[x][y].getId() == v.getId()) {
-                        //gameServer.makeMove(player, x, y);
+                        new MakeMoveTask().execute(x, y);
                         break;
                     }
                 }
             }
-            updateBoard();
         }
     };
 
@@ -141,7 +140,7 @@ public class GameActivity extends AppCompatActivity {
      * @author Kevin Thielen
      * @author André Tegeder
      */
-    void updateBoard() {
+    void updateBoard(GameState gameState) {
         Cell board[][] = gameState.getBoard();
         for(int x = 0; x<3; x++) {
             for (int y = 0; y < 3; y++) {
@@ -178,6 +177,15 @@ public class GameActivity extends AppCompatActivity {
                 buttons[x][y].invalidate();
             }
         }
+        if(gameState.isGameOver()) {
+            if(gameState.isWon()) {
+                winGame();
+            }
+            else {
+                loseGame();
+            }
+
+        }
     }
 
 
@@ -195,14 +203,39 @@ public class GameActivity extends AppCompatActivity {
         }
 
         protected GameState doInBackground(String... params){
-            GameState result = stub.getGameState(gameId);
+            GameState result = stub.getGameState(session.getSessionId(), gameId);
             return result;
         }
 
-        protected void onPostExecute(ArrayList gms){
+        protected void onPostExecute(GameState gameState){
             this.pd.dismiss();
-            setPlayerNames();
-            updateBoard();
+            setPlayerNames(gameState);
+            updateBoard(gameState);
+        }
+    }
+
+    class MakeMoveTask extends AsyncTask<Integer, Void, GameState> {
+
+        private ProgressDialog pd = new ProgressDialog(GameActivity.this);
+
+        @Override
+        protected void onPreExecute(){
+            this.pd.setMessage("Loading GameState");
+            this.pd.setIndeterminate(false);
+            this.pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            this.pd.setCancelable(false);
+            this.pd.show();
+        }
+
+        protected GameState doInBackground(Integer... params){
+            GameState result = stub.makeMove(session.getSessionId(), gameId, params[0], params[1]);
+            return result;
+        }
+
+        protected void onPostExecute(GameState gameState){
+            this.pd.dismiss();
+            setPlayerNames(gameState);
+            updateBoard(gameState);
         }
     }
 

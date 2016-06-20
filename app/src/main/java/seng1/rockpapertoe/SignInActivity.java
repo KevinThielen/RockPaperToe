@@ -19,6 +19,8 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import java.util.ArrayList;
+
 import seng1.rockpapertoe.Remote.RockPaperToeServerStub;
 import seng1.rockpapertoe.Remote.Session;
 import seng1.rockpapertoe.Remote.SessionResponse;
@@ -265,25 +267,45 @@ public class SignInActivity extends AppCompatActivity implements
         }
     }
 
-    class LoginTask extends AsyncTask<String, Void, Boolean> {
+    class LoginTask extends AsyncTask<String, Void, SessionResponse> {
+
+        private ProgressDialog pd = new ProgressDialog(SignInActivity.this);
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected void onPreExecute(){
+            this.pd.setMessage("Login..");
+            this.pd.setIndeterminate(false);
+            this.pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            this.pd.setCancelable(true);
+            this.pd.show();
+        }
+
+
+        @Override
+        protected SessionResponse doInBackground(String... params) {
             if (params.length > 0) {
                 SessionResponse result = stub.login(params[0]);
-
                 if (result == null || !result.isValidSession()) {
                     result = stub.register(params[0], params[1]);
 
                 }
-                if (result.isValidSession()) {
-                    session.setSessionId(result.getSessionId());
-                    session.setUserName(result.getUserName());
-
-                    return true;
-                }
+                return result;
             }
-            return false;
+            return null;
+        }
+        protected void onPostExecute(SessionResponse s){
+            this.pd.dismiss();
+
+
+            if (s.isValidSession()) {
+                session.setSessionId(s.getSessionId());
+                session.setUserName(s.getUserName());
+
+
+            }
+
+
+
         }
 
     }

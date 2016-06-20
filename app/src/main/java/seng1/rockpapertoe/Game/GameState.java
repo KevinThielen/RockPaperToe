@@ -1,5 +1,7 @@
 package seng1.rockpapertoe.Game;
 
+import android.util.Log;
+
 /**
  * Created by kevin on 19.06.16.
  */
@@ -13,12 +15,17 @@ public class GameState {
     ECell currentValue;
     boolean won;
 
-    public GameState(String opponent, boolean opponentsTurn, ECell currentValue, boolean gameOver, boolean won, Cell board[][]) {
+    public GameState(String opponent, boolean opponentsTurn, ECell currentValue, boolean gameOver, boolean won, Cell[][] b) {
         this.opponent = opponent;
         this.opponentsTurn = opponentsTurn;
         this.currentValue = currentValue;
         this.gameOver = gameOver;
-        this.board = board;
+        board = new Cell[3][3];
+        for(int x = 0; x<3; x++)
+            for(int y = 0; y<3; y++) {
+                Log.d("cell", b[x][y].toString());
+                board[x][y] = new Cell(b[x][y].getOwner(), b[x][y].getValue());
+            }
         this.won = won;
     }
 

@@ -78,8 +78,7 @@ public class RockPaperToeServerStub {
         return games;
     }
 
-    public GameState getGameState(int sessionId) {
-        SoapObject response = remote.executeSoapAction("getGameState", sessionId);
+    GameState responseToGameState(SoapObject response) {
         Log.d("Response", response.toString());
 
         String opponent = response.getPrimitivePropertySafelyAsString("opponent");
@@ -87,15 +86,37 @@ public class RockPaperToeServerStub {
         boolean gameOver = Boolean.parseBoolean(response.getPrimitivePropertyAsString("gameOver"));
         String currentValue = response.getPrimitivePropertyAsString("currentValue");
         boolean won = Boolean.parseBoolean(response.getPrimitivePropertyAsString("won"));
+        SoapObject boardResponse = (SoapObject) response.getProperty("board");
+
+        Log.d("board", boardResponse.toString());
+        Log.d("props", boardResponse.getPropertyCount()+"");
 
         Cell[][] board = new Cell[3][3];
         for(int x = 0; x<3; x++) {
+            SoapObject row =  (SoapObject) response.getProperty(1+x);
+            Log.d("row", row.toString());
+
             for(int y = 0; y<3; y++) {
-                board[x][y] = new Cell();
+                SoapObject cell = (SoapObject) row.getProperty(y);
+                Log.d("cell", cell.toString());
+
+                String value = cell.getPrimitivePropertyAsString("value");
+                Log.d("value", value);
+                Boolean owned = Boolean.parseBoolean(cell.getPrimitivePropertyAsString("ownedByPlayer"));
+                Log.d("value", owned.toString());
+                board[x][y] = new Cell(owned, ECell.valueOf(value));
             }
         }
         return new GameState(opponent, opponentsTurn,  ECell.valueOf(currentValue), gameOver, won, board);
+    }
 
+    public GameState makeMove(int sessionId, int gameId, int x, int y) {
+        SoapObject response = remote.executeSoapAction("makeMove", sessionId, gameId, x, y);
+        return responseToGameState(response);
+    }
+    public GameState getGameState(int sessionId, int gameId) {
+        SoapObject response = remote.executeSoapAction("getGameState", sessionId, gameId);
+        return responseToGameState(response);
     }
     public ArrayList<GameStatus> getGames(int sessionId) {
         ArrayList<GameStatus> games = new ArrayList<>();
